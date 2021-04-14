@@ -1,6 +1,10 @@
 package com.streaming.streaming.servico;
 
-import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -9,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.streaming.streaming.modelo.Producao;
 import com.streaming.streaming.repositorio.ProducaoRepository;
+import com.streaming.streaming.servico.exception.DuplicidadeProducaoException;
 import com.streaming.streaming.servico.impl.ProducaoServiceImpl;
 
 @ExtendWith(SpringExtension.class)
@@ -25,13 +30,16 @@ public class ProducaoServiceTest {
 	
 	private Producao producao;
 	
-	@BeforeAll
+	@BeforeEach
 	public void setup() throws Exception {
 		producaoService = new ProducaoServiceImpl(producaoRepository);
 		producao = new Producao();
 		producao.setId(ID);
 		producao.setTitulo(TITULO);
 		producao.setAno(ANO);
+		
+		Mockito.when(producaoRepository.findByProducaoTituloAndProducaoAno(TITULO, ANO))
+				.thenReturn(Optional.empty());
 	}
 	
 	@Test
@@ -40,4 +48,20 @@ public class ProducaoServiceTest {
 		
 		Mockito.verify(producaoRepository).save(producao);
 	}
+	
+	@Test
+	public void naoDeveSalvarProducoesComMesmoTituloEAno() throws Exception {
+		
+		Exception exception = assertThrows(DuplicidadeProducaoException.class, () -> {
+			Mockito.when(producaoRepository.findByProducaoTituloAndProducaoAno(TITULO, ANO))
+					.thenReturn(Optional.of(producao));
+			producaoService.salvar(producao);
+	    });
+
+	    //String expectedMessage = "For input string";
+	    //String actualMessage = exception.getMessage();
+
+	    //assertTrue(actualMessage.contains(expectedMessage));
+	}
+	
 }
