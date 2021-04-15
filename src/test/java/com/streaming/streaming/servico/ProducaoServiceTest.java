@@ -1,5 +1,6 @@
 package com.streaming.streaming.servico;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.streaming.streaming.modelo.Producao;
 import com.streaming.streaming.repositorio.ProducaoRepository;
+import com.streaming.streaming.servico.exception.AnoFuturoProducaoException;
 import com.streaming.streaming.servico.exception.DuplicidadeProducaoException;
 import com.streaming.streaming.servico.impl.ProducaoServiceImpl;
 
@@ -22,6 +24,7 @@ public class ProducaoServiceTest {
 	private static final Long ID = 1L;
 	private static final String TITULO = "A Lagoa Azul";
 	private static final int ANO = 1980;
+	private static final int ANO_FUTURO = 2030;
 		
 	@MockBean
 	private ProducaoRepository producaoRepository;
@@ -29,6 +32,7 @@ public class ProducaoServiceTest {
 	private ProducaoService producaoService;
 	
 	private Producao producao;
+	
 	
 	@BeforeEach
 	public void setup() throws Exception {
@@ -42,6 +46,7 @@ public class ProducaoServiceTest {
 				.thenReturn(Optional.empty());
 	}
 	
+	
 	@Test
 	public void deveSalvarProducaoNoRepositorio() throws Exception {
 		producaoService.salvar(producao);
@@ -49,19 +54,32 @@ public class ProducaoServiceTest {
 		Mockito.verify(producaoRepository).save(producao);
 	}
 	
+	
 	@Test
 	public void naoDeveSalvarProducoesComMesmoTituloEAno() throws Exception {
-		
-		Exception exception = assertThrows(DuplicidadeProducaoException.class, () -> {
+		assertThrows(DuplicidadeProducaoException.class, () -> {
 			Mockito.when(producaoRepository.findByProducaoTituloAndProducaoAno(TITULO, ANO))
 					.thenReturn(Optional.of(producao));
 			producaoService.salvar(producao);
 	    });
-
-	    //String expectedMessage = "For input string";
-	    //String actualMessage = exception.getMessage();
-
-	    //assertTrue(actualMessage.contains(expectedMessage));
 	}
+	
+	
+	@Test
+	public void naoDeveSalvarProducaoComAnoFuturo() throws Exception {
+		String mensagemEsperada, mensagemAtual = null;
+		
+		producao.setAno(ANO_FUTURO);
+		
+		Throwable excecao = assertThrows(AnoFuturoProducaoException.class, () -> { 
+			producaoService.salvar(producao);
+		});
+		
+		mensagemEsperada = "Erro nos dados: Produção se encontra com ano de fabricação futuro!"; 
+		mensagemAtual = excecao.getMessage();
+		assertEquals(mensagemEsperada, mensagemAtual);  
+	}
+	
+	
 	
 }
