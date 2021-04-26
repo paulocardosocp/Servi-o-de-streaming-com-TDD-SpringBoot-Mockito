@@ -5,7 +5,6 @@ public class Producao {
 	private Long id;
 	private String titulo;
 	private int ano;
-	private Genero genero;
 	
 	public Producao() {	}
 
@@ -31,13 +30,6 @@ public class Producao {
 
 	public void setAno(int ano) {
 		this.ano = ano;
-	}
-
-	public Genero getGenero() {
-		return genero;
-	}
-	public void setGenero(Genero genero) {
-		this.genero = genero;
 	}
 	
 	@Override
