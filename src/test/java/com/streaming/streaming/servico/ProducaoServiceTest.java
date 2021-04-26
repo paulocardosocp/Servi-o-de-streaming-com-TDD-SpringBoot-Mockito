@@ -2,6 +2,8 @@ package com.streaming.streaming.servico;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ import com.streaming.streaming.modelo.Producao;
 import com.streaming.streaming.repositorio.ProducaoRepository;
 import com.streaming.streaming.servico.exception.AnoFuturoProducaoException;
 import com.streaming.streaming.servico.exception.DuplicidadeProducaoException;
+import com.streaming.streaming.servico.exception.message.MessageException;
 import com.streaming.streaming.servico.impl.ProducaoServiceImpl;
 
 @ExtendWith(SpringExtension.class)
@@ -42,7 +45,7 @@ public class ProducaoServiceTest {
 		producao.setTitulo(TITULO);
 		producao.setAno(ANO);
 		
-		Mockito.when(producaoRepository.findByProducaoTituloAndProducaoAno(TITULO, ANO))
+		when(producaoRepository.findByProducaoTituloAndProducaoAno(TITULO, ANO))
 				.thenReturn(Optional.empty());
 	}
 	
@@ -51,7 +54,7 @@ public class ProducaoServiceTest {
 	public void deveSalvarProducaoNoRepositorio() throws Exception {
 		producaoService.salvar(producao);
 		
-		Mockito.verify(producaoRepository).save(producao);
+		verify(producaoRepository).save(producao);
 	}
 	
 	
@@ -75,11 +78,9 @@ public class ProducaoServiceTest {
 			producaoService.salvar(producao);
 		});
 		
-		mensagemEsperada = "Erro nos dados: Produção se encontra com ano de fabricação futuro!"; 
+		mensagemEsperada = MessageException.ANO_FUTURO_PRODUCAO_EXCEPTION_MESSAGE; 
 		mensagemAtual = excecao.getMessage();
 		assertEquals(mensagemEsperada, mensagemAtual);  
 	}
-	
-	
 	
 }
