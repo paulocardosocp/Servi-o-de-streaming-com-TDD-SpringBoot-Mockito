@@ -1,11 +1,38 @@
 package com.streaming.streaming.modelo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Producao {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(length = 50, nullable = false)
 	private String titulo;
+	
+	@Column(nullable = false)
 	private int ano;
-	public Genero genero;
+	
+	@ManyToOne
+	@JoinColumn(name="id_genero")
+	private Genero genero;
+	
+	@Enumerated(EnumType.STRING)
+	private Classificacao classificacao;
+	
+	@ManyToOne
+	@JoinColumn(name="id_tipo")
+	private TipoProducao tipo;
 	
 	public Producao() {	}
 
@@ -33,14 +60,6 @@ public class Producao {
 		this.ano = ano;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-	
 	public Genero getGenero() {
 		return genero;
 	}
@@ -49,6 +68,22 @@ public class Producao {
 		this.genero = genero;
 	}
 	
+	public Classificacao getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(Classificacao classificacao) {
+		this.classificacao = classificacao;
+	}
+
+	public TipoProducao getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoProducao tipo) {
+		this.tipo = tipo;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -66,6 +101,14 @@ public class Producao {
 		return true;
 	}
 	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 	
 	
 }
