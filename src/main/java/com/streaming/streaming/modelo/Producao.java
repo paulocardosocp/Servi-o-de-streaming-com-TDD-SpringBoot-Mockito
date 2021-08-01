@@ -5,6 +5,7 @@ public class Producao {
 	private Long id;
 	private String titulo;
 	private int ano;
+	public Genero genero;
 	
 	public Producao() {	}
 
@@ -39,7 +40,15 @@ public class Producao {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
+	
+	public Genero getGenero() {
+		return genero;
+	}
+	
+	public void setGenero(Genero genero) {
+		this.genero = genero;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

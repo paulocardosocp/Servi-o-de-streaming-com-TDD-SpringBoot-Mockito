@@ -1,12 +1,9 @@
 package com.streaming.streaming.modelo;
 
-import java.util.List;
-
 public class Genero {
 
 	private Long id;
 	private String descricao;
-	private List<Producao> producoes;
 	
 	public Long getId() {
 		return id;
@@ -22,14 +19,6 @@ public class Genero {
 	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public List<Producao> getProducoes() {
-		return producoes;
-	}
-
-	public void setProducoes(List<Producao> producoes) {
-		this.producoes = producoes;
 	}
 
 	@Override
@@ -57,7 +46,5 @@ public class Genero {
 		return true;
 	}
 	
-	
-	
-	
+
 }

@@ -8,5 +8,9 @@ public interface ProducaoRepository {
 
 	Producao save(Producao producao);
 
-	Optional<Producao> findByProducaoTituloAndProducaoAno(String titulo, int ano); 
+	Optional<Producao> findByTituloAndAno(String titulo, int ano);
+
+	Optional<Producao> findByGenero(String generoDescricao);
+	
+	
 }

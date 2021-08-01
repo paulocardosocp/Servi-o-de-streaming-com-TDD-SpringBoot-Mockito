@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.streaming.streaming.modelo.Genero;
-import com.streaming.streaming.modelo.Producao;
 import com.streaming.streaming.repositorio.GeneroRepository;
 import com.streaming.streaming.servico.exception.DuplicidadeGeneroException;
 import com.streaming.streaming.servico.impl.GeneroServiceImpl;
@@ -23,7 +21,7 @@ import com.streaming.streaming.servico.impl.GeneroServiceImpl;
 public class GeneroServiceTest {
 	
 	private static final Long ID = 1L;
-	private static final String DESCRICAO = "Suspense";
+	private static final String DESCRICAO = "Drama";
 	
 	@MockBean
 	private GeneroRepository generoRepository;
@@ -40,7 +38,6 @@ public class GeneroServiceTest {
 		genero = new Genero();
 		genero.setId(ID);
 		genero.setDescricao(DESCRICAO);
-		genero.setProducoes(new ArrayList<Producao>());
 	}
 	
 	
