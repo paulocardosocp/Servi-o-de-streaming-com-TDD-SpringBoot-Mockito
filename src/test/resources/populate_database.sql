@@ -14,6 +14,6 @@ INSERT INTO producao(titulo, ano, classificacao, id_genero, id_tipo) VALUES (
 'E o Vento Levou', 1939, 'AMARELO', 1, 1
 );
 INSERT INTO producao(titulo, ano, classificacao, id_genero, id_tipo) VALUES (
-'Game of Thrones', 2011, 'LARANJA', 2, 3
+'Game of Thrones', 2011, 'LARANJA', 2, 2
 );
 

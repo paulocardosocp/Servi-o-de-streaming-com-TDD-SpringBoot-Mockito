@@ -42,8 +42,8 @@ public class ProducaoServiceImpl implements ProducaoService {
 
 
 	@Override
-	public Producao buscarPorGenero(Genero genero) throws ProducaoNotFoundException {	
-		Optional<Producao> optional = producaoRepository.findByGenero(genero.getDescricao());
+	public Producao buscarPorGenero(String genero) throws ProducaoNotFoundException {	
+		Optional<Producao> optional = producaoRepository.findByDescricaoGenero(genero);
 		return optional.orElseThrow(() -> new ProducaoNotFoundException());
 	}
 

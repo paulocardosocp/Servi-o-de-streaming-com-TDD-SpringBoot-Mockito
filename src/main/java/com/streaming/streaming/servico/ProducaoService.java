@@ -1,6 +1,5 @@
 package com.streaming.streaming.servico;
 
-import com.streaming.streaming.modelo.Genero;
 import com.streaming.streaming.modelo.Producao;
 import com.streaming.streaming.servico.exception.AnoFuturoProducaoException;
 import com.streaming.streaming.servico.exception.DuplicidadeProducaoException;
@@ -12,5 +11,5 @@ public interface ProducaoService {
 
 	boolean isAnoFuturoProducao(Producao producao);
 
-	Producao buscarPorGenero(Genero genero) throws ProducaoNotFoundException;
+	Producao buscarPorGenero(String genero) throws ProducaoNotFoundException;
 }

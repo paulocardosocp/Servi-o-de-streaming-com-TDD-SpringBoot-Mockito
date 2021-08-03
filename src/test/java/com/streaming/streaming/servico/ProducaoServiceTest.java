@@ -28,7 +28,7 @@ import com.streaming.streaming.servico.impl.ProducaoServiceImpl;
 public class ProducaoServiceTest {
 	
 	private static final Long ID = 1L;
-	private static final String TITULO = "O Poderoso Chefão";
+	private static final String TITULO = "O Poderoso Chefao";
 	private static final int ANO = 1972;
 	private static final int ANO_FUTURO = 2050;
 	
@@ -56,6 +56,8 @@ public class ProducaoServiceTest {
 		genero = new Genero();
 		genero.setId(GENERO_ID);
 		genero.setDescricao(GENERO_DESCRICAO);
+		
+		producao.setGenero(genero);
 		
 		when(producaoRepository.findByTituloAndAno(TITULO, ANO))
 				.thenReturn(Optional.empty());
@@ -98,11 +100,11 @@ public class ProducaoServiceTest {
 	
 	@Test
 	public void deveBuscarProducoesPorGenero() throws Exception {
-		when(producaoRepository.findByGenero(GENERO_DESCRICAO)).thenReturn(Optional.of(producao));
+		when(producaoRepository.findByDescricaoGenero(genero.getDescricao())).thenReturn(Optional.of(producao));
 		
-		Producao producaoTeste = producaoService.buscarPorGenero(genero);
+		Producao producaoTeste = producaoService.buscarPorGenero(genero.getDescricao());
 		
-		verify(producaoRepository).findByGenero(GENERO_DESCRICAO);
+		verify(producaoRepository).findByDescricaoGenero(genero.getDescricao());
 		
 		assertThat(producaoTeste).isNotNull();
 		assertThat(producaoTeste.getTitulo()).isEqualTo(TITULO);
@@ -114,12 +116,12 @@ public class ProducaoServiceTest {
 	public void deveRetornarExcecaoQuandoNaoEncontrarAProducaoPeloGenero() throws Exception {
 		String mensagemEsperada, mensagemAtual = null;
 		
-		when(producaoRepository.findByGenero(GENERO_DESCRICAO)).thenReturn(Optional.of(producao));
+		when(producaoRepository.findByDescricaoGenero(genero.getDescricao())).thenReturn(Optional.of(producao));
 		
-		genero.setDescricao("Comédia");
+		genero.setDescricao("Ficcao");
 		
 		Throwable excecao = assertThrows(ProducaoNotFoundException.class, () -> { 
-			producaoService.buscarPorGenero(genero);
+			producaoService.buscarPorGenero(genero.getDescricao());
 		});
 		mensagemEsperada = MessageException.PRODUCAO_NOT_FOUND_EXCEPTION_MESSAGE; 
 		mensagemAtual = excecao.getMessage();
